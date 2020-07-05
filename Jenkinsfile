@@ -1,5 +1,10 @@
 pipeline {
-    agent { docker { image 'node:12' } }
+    agent { docker
+        {
+            image 'node:12'
+            args '-u root:root'
+        }
+    }
     environment {
         CI = 'true'
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
