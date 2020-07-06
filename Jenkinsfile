@@ -42,7 +42,7 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('build container') {
+        stage('build-container') {
             agent any
             when {
                 branch 'master'
