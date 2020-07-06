@@ -2,7 +2,7 @@ pipeline {
     agent { docker
         {
             image 'node:12'
-            args '-u root:root'
+            args '--u "$(id -u):$(id -g)"'
         }
     }
     environment {
@@ -56,12 +56,6 @@ pipeline {
                     sh 'docker push "$ECR_REPOSITORY:latest"'
                 }
             }
-        }
-    }
-    post {
-        always {
-            echo 'I will always say Hello again!'
-            sh 'sudo chown jenkins: -R \$PWD/'
         }
     }
 }
