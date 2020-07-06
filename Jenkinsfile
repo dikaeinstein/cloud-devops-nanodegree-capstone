@@ -1,8 +1,8 @@
 pipeline {
-    agent { docker
-        {
+    agent {
+        docker {
             image 'node:12'
-            args '-u "$(id -u):$(id -g)"'
+            args '-u 1000:1000'
         }
     }
     environment {
