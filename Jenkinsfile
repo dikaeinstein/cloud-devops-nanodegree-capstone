@@ -11,6 +11,11 @@ pipeline {
         KUBE_CONFIG = ""
     }
     stages {
+        stage('fix permissions') {
+            steps {
+                sh "sudo chown jenkins: -R \$PWD/"
+            }
+        }
         stage('install') {
             when {
                 not {
