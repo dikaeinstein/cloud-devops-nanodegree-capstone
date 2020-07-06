@@ -57,5 +57,10 @@ pipeline {
                 }
             }
         }
+        post {
+            always {
+                sh 'chmod -R a+w \$PWD'
+            }
+        }
     }
 }
