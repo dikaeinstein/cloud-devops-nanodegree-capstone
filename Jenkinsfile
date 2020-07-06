@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:12'
-            args '-u 1000:1000'
-        }
-    }
+    agent none
     environment {
         CI = 'true'
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
@@ -12,6 +7,12 @@ pipeline {
     }
     stages {
         stage('install') {
+            agent {
+                docker {
+                    image 'node:12'
+                    args '-u 1000:1000'
+                }
+            }
             when {
                 not {
                     branch 'master'
@@ -22,6 +23,12 @@ pipeline {
             }
         }
         stage('test') {
+            agent {
+                docker {
+                    image 'node:12'
+                    args '-u 1000:1000'
+                }
+            }
             when {
                 not {
                     branch 'master'
@@ -33,6 +40,12 @@ pipeline {
             }
         }
         stage('build') {
+            agent {
+                docker {
+                    image 'node:12'
+                    args '-u 1000:1000'
+                }
+            }
             when {
                 not {
                     branch 'master'
