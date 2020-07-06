@@ -11,11 +11,6 @@ pipeline {
         KUBE_CONFIG = ""
     }
     stages {
-        stage('fix permissions') {
-            steps {
-                sh "sudo chown jenkins: -R \$PWD/"
-            }
-        }
         stage('install') {
             when {
                 not {
@@ -65,7 +60,8 @@ pipeline {
     }
     post {
         always {
-            sh 'chmod -R a+w \$PWD'
+            echo 'I will always say Hello again!'
+            sh 'sudo chown jenkins: -R \$PWD/'
         }
     }
 }
