@@ -1,13 +1,11 @@
 pipeline {
     agent {
-        docker {
-            image 'node:12'
-            args '-u 1000:1000'
-        }
+        docker { image 'node:12' }
     }
     environment {
         CI = 'true'
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
+        HOME = '.'
         KUBE_CONFIG = ""
     }
     stages {
