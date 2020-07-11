@@ -44,7 +44,7 @@ pipeline {
             }
         }
         stage('build container') {
-            agent { label: 'node-1' }
+            agent { label 'node-1' }
             // when {
             //     branch 'master'
             // }
