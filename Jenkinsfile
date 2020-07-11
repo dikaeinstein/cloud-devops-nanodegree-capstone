@@ -51,6 +51,8 @@ pipeline {
             // }
             steps {
                 echo "I'm building the docker container"
+                echo "${ECR_REPOSITORY}"
+                echo "$DOCKER_PASSWORD"
                 sh 'docker login --username AWS -p $DOCKER_PASSWORD $ECR_REPOSITORY'
                 sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
                 sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
