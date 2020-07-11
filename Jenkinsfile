@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'node:12' }
-    }
+    agent any
     environment {
         CI = 'true'
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
@@ -9,7 +7,10 @@ pipeline {
         KUBE_CONFIG = ""
     }
     stages {
-        stage('install') {
+        stage('test') {
+            agent {
+                docker { image 'node:12' }
+            }
             when {
                 not {
                     branch 'master'
@@ -17,43 +18,26 @@ pipeline {
             }
             steps {
                 sh 'npm ci'
-            }
-        }
-        stage('test') {
-            when {
-                not {
-                    branch 'master'
-                }
-            }
-            steps {
                 sh 'npm run lint'
                 sh 'npm test'
             }
         }
-        stage('build') {
-            when {
-                not {
-                    branch 'master'
-                }
-            }
-            steps {
-                sh 'npm run build'
-            }
-        }
-        stage('build-container') {
-            agent any
+        stage('build container') {
             when {
                 branch 'master'
             }
             steps {
-                // withAWS(region:'eu-west-2',credentials:'aws-deploy') {
-                // sh 'aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REPOSITORY'
-                // sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
-                // sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
-                // sh 'docker tag $"ECR_REPOSITORY:$GIT_COMMIT" "$ECR_REPOSITORY:latest"'
-                // sh 'docker push "$ECR_REPOSITORY:latest"'
-                // }
-                echo "I'm building the docker container"
+                withAWS(credentials:'aws-credential') {
+                    script {
+                        def login = ecrLogin()
+                        sh "${login}"
+                    }
+                    sh 'docker version'
+                    sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
+                    sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
+                    sh 'docker tag "$ECR_REPOSITORY:$GIT_COMMIT" "$ECR_REPOSITORY:latest"'
+                    sh 'docker push "$ECR_REPOSITORY:latest"'
+                }
             }
         }
     }
