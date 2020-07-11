@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    // agent {
-    //     docker { image 'node:12' }
-    // }
     environment {
         // AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         // AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
@@ -14,16 +11,6 @@ pipeline {
         KUBE_CONFIG = ""
     }
     stages {
-        // stage('install') {
-        //     when {
-        //         not {
-        //             branch 'master'
-        //         }
-        //     }
-        //     steps {
-        //         sh 'npm ci'
-        //     }
-        // }
         stage('test') {
             agent {
                 docker { image 'node:12' }
@@ -39,31 +26,21 @@ pipeline {
                 sh 'npm test'
             }
         }
-        // stage('build') {
-        //     agent {
-        //         docker { image 'node:12' }
-        //     }
-        //     when {
-        //         not {
-        //             branch 'master'
-        //         }
-        //     }
-        //     steps {
-        //         sh 'npm run build'
-        //     }
-        // }
         stage('build container') {
             // when {
             //     branch 'master'
             // }
             steps {
                 echo "I'm building the docker container"
-                sh 'docker version'
-                // sh 'docker login --username AWS -p $DOCKER_PASSWORD $ECR_REPOSITORY'
-                // sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
-                // sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
-                // sh 'docker tag $"ECR_REPOSITORY:$GIT_COMMIT" "$ECR_REPOSITORY:latest"'
-                // sh 'docker push "$ECR_REPOSITORY:latest"'
+                withAWS(region:'eu-west-2',credentials:'aws-deploy') {
+                    sh 'docker version'
+                    sh 'aws ecr help'
+                    sh 'docker login --username AWS -p $DOCKER_PASSWORD $ECR_REPOSITORY'
+                    sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
+                    sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
+                    sh 'docker tag $"ECR_REPOSITORY:$GIT_COMMIT" "$ECR_REPOSITORY:latest"'
+                    sh 'docker push "$ECR_REPOSITORY:latest"'
+                }
             }
         }
     }
