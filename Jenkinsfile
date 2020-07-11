@@ -11,14 +11,14 @@ pipeline {
         KUBE_CONFIG = ""
     }
     stages {
-        stage('test aws-cli') {
-            agent {
-                docker { image 'amazon/aws-cli:2.0.30' }
-            }
-            steps {
-                sh 'aws ecr help'
-            }
-        }
+        // stage('test aws-cli') {
+        //     agent {
+        //         docker { image 'amazon/aws-cli:2.0.30' }
+        //     }
+        //     steps {
+        //         sh 'aws ecr help'
+        //     }
+        // }
         stage('test') {
             agent {
                 docker { image 'node:12' }
