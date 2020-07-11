@@ -48,7 +48,7 @@ pipeline {
             steps {
                 echo "I'm building the docker container"
                 withAWS(region:'eu-west-2',credentials:'aws-deploy') {
-                sh 'aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REPOSITORY'
+                sh 'docker login --username AWS -p $(aws ecr get-login-password) $ECR_REPOSITORY'
                 sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
                 sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
                 sh 'docker tag $"ECR_REPOSITORY:$GIT_COMMIT" "$ECR_REPOSITORY:latest"'
