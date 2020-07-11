@@ -11,6 +11,11 @@ pipeline {
         KUBE_CONFIG = ""
     }
     stages {
+        stage('test aws-cli') {
+            steps {
+                sh 'aws ecr help'
+            }
+        }
         stage('test') {
             agent {
                 docker { image 'node:12' }
@@ -34,7 +39,6 @@ pipeline {
                 echo "I'm building the docker container"
                 withAWS(region:'eu-west-2',credentials:'aws-deploy') {
                     sh 'docker version'
-                    sh 'aws ecr help'
                     sh 'docker login --username AWS -p $DOCKER_PASSWORD $ECR_REPOSITORY'
                     sh 'docker build -t "$ECR_REPOSITORY:$GIT_COMMIT" .'
                     sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
