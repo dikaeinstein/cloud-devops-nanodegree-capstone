@@ -34,6 +34,7 @@ pipeline {
                 }
             }
             steps {
+                sh 'npm ci'
                 sh 'npm run lint'
                 sh 'npm test'
             }
