@@ -23,9 +23,9 @@ pipeline {
             }
         }
         stage('build container') {
-            // when {
-            //     branch 'master'
-            // }
+            when {
+                branch 'master'
+            }
             steps {
                 withAWS(credentials:'aws-credential') {
                     script {
