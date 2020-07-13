@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdn-capstone
+  labels:
+    app: cdn-capstone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cdn-capstone
+  template:
+    metadata:
+      labels:
+        app: cdn-capstone
+    spec:
+      containers:
+        - name: cdn-capstone
+          image: 772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+      imagePullSecrets:
+        - name: aws-ecr-cred
