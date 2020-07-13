@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Amazon EKS Cluster"
+
+Resources:
+  cdnCapstone:
+    Type: "AWS::EKS::Cluster"
+    Properties:
+      EncryptionConfig:
+        - Provider:
+            KeyArn: arn:aws:kms:eu-west-2:772413732375:key/416741ba-f843-4e61-8bc1-eca49b15a0a5
+          Resources: ["secrets"]
+      Name: cdn-capstone
+      Version: "1.17"
+      RoleArn:
+        Fn::ImportValue: eksClusterRole-RoleArn
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          Fn::Split: [",", !ImportValue eksSecurityGroups]
+        SubnetIds:
+          Fn::Split: [",", !ImportValue eksSubnetIds]
+
+Outputs:
+  clusterName:
+    Description: The EKS cluster name
+    Value: !Ref cdnCapstone
+    Export:
+      Name: ClusterName
