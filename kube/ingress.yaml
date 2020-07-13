@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: cdn-capstone-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  # tls:
+  #   - hosts:
+  #       - a0847726a34cb45318bd010a01f4c7d5-a50b12e6f06742a6.elb.eu-west-2.amazonaws.com
+  #     secretName: cdn-capstone-tls
+  rules:
+    # - host: a0847726a34cb45318bd010a01f4c7d5-a50b12e6f06742a6.elb.eu-west-2.amazonaws.com
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: cdn-capstone
+              servicePort: 80
