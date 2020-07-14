@@ -45,6 +45,7 @@ pipeline {
             //     branch 'master'
             // }
             steps {
+                sh 'ls ~/'
                 sh 'kubectl version'
             }
         }
