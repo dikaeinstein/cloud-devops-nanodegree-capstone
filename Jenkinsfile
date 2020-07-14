@@ -3,7 +3,7 @@ pipeline {
     environment {
         CI = 'true'
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
-        // KUBECONFIG = "/home/ubuntu/.kube/config"
+        KUBECONFIG = "/home/ubuntu/.kube/config"
     }
     stages {
         stage('test') {
@@ -47,6 +47,7 @@ pipeline {
             //     branch 'master'
             // }
             steps {
+                echo '$HOME'
                 sh 'kubectl version'
             }
         }
