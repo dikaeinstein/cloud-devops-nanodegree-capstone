@@ -43,9 +43,9 @@ pipeline {
             }
         }
         stage('deploy') {
-            // when {
-            //     branch 'master'
-            // }
+            when {
+                branch 'master'
+            }
             steps {
                 withAWS(credentials:'aws-credential'){
                     sh 'kubectl version'
