@@ -1,15 +1,17 @@
 pipeline {
     agent any
     environment {
-        CI = 'true'
+        CI = "true"
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
-        HOME = '.'
-        KUBE_CONFIG = ""
+        KUBECONFIG = "/home/ubuntu/.kube/config"
     }
     stages {
         stage('test') {
             agent {
                 docker { image 'node:12' }
+            }
+            environment {
+                HOME = '.'
             }
             when {
                 not {
@@ -37,6 +39,17 @@ pipeline {
                     sh 'docker push "$ECR_REPOSITORY:$GIT_COMMIT"'
                     sh 'docker tag "$ECR_REPOSITORY:$GIT_COMMIT" "$ECR_REPOSITORY:latest"'
                     sh 'docker push "$ECR_REPOSITORY:latest"'
+                }
+            }
+        }
+        stage('deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                withAWS(credentials:'aws-credential'){
+                    sh 'kubectl version'
+                    sh 'kubectl apply -f kube/deployment.yaml'
                 }
             }
         }
