@@ -46,8 +46,10 @@ pipeline {
             // when {
             //     branch 'master'
             // }
+            environment {
+                AWS_PROFILE "udacity-jenkins"
+            }
             steps {
-                echo '$HOME'
                 sh 'kubectl version'
             }
         }
