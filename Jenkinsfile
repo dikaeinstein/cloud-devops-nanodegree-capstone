@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        CI = 'true'
+        CI = "true"
         ECR_REPOSITORY = "772413732375.dkr.ecr.eu-west-2.amazonaws.com/cloud-devops-nanodegree-capstone"
         KUBECONFIG = "/home/ubuntu/.kube/config"
     }
@@ -47,7 +47,7 @@ pipeline {
             //     branch 'master'
             // }
             environment {
-                AWS_PROFILE "udacity-jenkins"
+                AWS_PROFILE = "udacity-jenkins"
             }
             steps {
                 sh 'kubectl version'
