@@ -44,8 +44,11 @@ pipeline {
             // when {
             //     branch 'master'
             // }
+            environment {
+                HOME = '~/'
+            }
             steps {
-                sh 'ls ~/'
+                sh 'ls $HOME'
                 sh 'kubectl version'
             }
         }
