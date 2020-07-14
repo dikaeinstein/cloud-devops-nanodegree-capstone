@@ -46,11 +46,10 @@ pipeline {
             // when {
             //     branch 'master'
             // }
-            environment {
-                AWS_PROFILE = "udacity-jenkins"
-            }
             steps {
-                sh 'kubectl version'
+                withAWS(credentials:'aws-credential'){
+                    sh 'kubectl version'
+                }
             }
         }
     }
