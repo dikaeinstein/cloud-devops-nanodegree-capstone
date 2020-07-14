@@ -40,5 +40,13 @@ pipeline {
                 }
             }
         }
+        stage('deploy') {
+            // when {
+            //     branch 'master'
+            // }
+            steps {
+                sh 'kubectl version'
+            }
+        }
     }
 }
