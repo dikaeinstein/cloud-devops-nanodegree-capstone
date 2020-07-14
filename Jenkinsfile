@@ -49,7 +49,7 @@ pipeline {
             steps {
                 withAWS(credentials:'aws-credential'){
                     sh 'kubectl version'
-                    sh 'kubect apply -f kube/deployment.yaml'
+                    sh 'kubectl apply -f kube/deployment.yaml'
                 }
             }
         }
