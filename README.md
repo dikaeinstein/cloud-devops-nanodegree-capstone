@@ -1,6 +1,14 @@
 # cloud-devops-nanodegree-capstone
 
+This is the capstone (final) project of the Udacity CloudDevops Nanodegree. The React app is served by Nginx and the deployed to a AWS EKS Kubernetes cluster that was deployed with AWS Cloudformation.
+The CI/CD pipeline runs on Jenkins hosted on AWS EC2
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Requirements
+
+- Nodejs 12
+- Docker
 
 ## Available Scripts
 
@@ -41,4 +49,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+To deploy via the Jenkins CI/CD pipeline:
+
+- make a change
+- commit and push the change
+- pipeline succeeds and merged into master
+- docker image is built and pushed to AWS ECR
+- Then deployed to the kubernetes cluster
